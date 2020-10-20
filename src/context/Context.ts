@@ -15,11 +15,13 @@ const AfterBuild = 'afterBuild' //后处理函数
 export default class Context{
     private _componentId:number=0;
 
+    private _afterBuildChildFuns = [];
     /**
      * 夫节点
      */
     private _parent:Context;
     private _initLog:boolean = false;
+    
     /**
      * 放bean缓存
      */
@@ -37,6 +39,12 @@ export default class Context{
 
     constructor(){
         
+    }
+
+    addAfterBuildChildFun(fun:Function){
+        if(fun != null){
+            this._afterBuildChildFuns.push(fun);
+        }
     }
 
     /**
@@ -84,6 +92,9 @@ export default class Context{
     buildChild():Context{
         let context = new Context();
         context._parent = this;
+        for(let fun of this._afterBuildChildFuns){
+            fun(context);
+        }
         return context;
     }
 
@@ -262,9 +273,9 @@ export default class Context{
         this._builderMap[beanId] = builder;
     }
 
-    regClazz(beanId:string,clazz){
+    regClazz(beanId:string,clazz,single?:boolean){
         
-        if(clazz.__needReg =='single'){
+        if(clazz.__needReg =='single' || single){
             this.regBuilder(beanId,{
                 build(context:Context){
                     if(this._ins == null){

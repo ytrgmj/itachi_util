@@ -17,6 +17,7 @@ const AfterBuild = 'afterBuild'; //后处理函数
 class Context {
     constructor() {
         this._componentId = 0;
+        this._afterBuildChildFuns = [];
         this._initLog = false;
         /**
          * 放bean缓存
@@ -27,6 +28,11 @@ class Context {
          * builder 的缓存
          */
         this._builderMap = {};
+    }
+    addAfterBuildChildFun(fun) {
+        if (fun != null) {
+            this._afterBuildChildFuns.push(fun);
+        }
     }
     /**
      *
@@ -66,6 +72,9 @@ class Context {
     buildChild() {
         let context = new Context();
         context._parent = this;
+        for (let fun of this._afterBuildChildFuns) {
+            fun(context);
+        }
         return context;
     }
     _parseBeanId(beanId) {
@@ -233,8 +242,8 @@ class Context {
             beanId = this._parseBeanId(beanId);
         this._builderMap[beanId] = builder;
     }
-    regClazz(beanId, clazz) {
-        if (clazz.__needReg == 'single') {
+    regClazz(beanId, clazz, single) {
+        if (clazz.__needReg == 'single' || single) {
             this.regBuilder(beanId, {
                 build(context) {
                     if (this._ins == null) {

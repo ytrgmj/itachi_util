@@ -87,6 +87,7 @@ export default class LogHelp{
     }
 
     private _acqLogType():LogType{
+        
         if(LogHelp.envName == 'local' || LogHelp.envName==null)
             return new LocalLog();
         return new DefaultLog();

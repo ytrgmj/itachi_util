@@ -9,6 +9,7 @@ import LogHelp from "../log/LogHelp";
  */
 export default class Context {
     private _componentId;
+    private _afterBuildChildFuns;
     /**
      * 夫节点
      */
@@ -26,6 +27,7 @@ export default class Context {
     private _logger;
     private _id;
     constructor();
+    addAfterBuildChildFun(fun: Function): void;
     /**
      *
      * @param componentId 组件容器的id
@@ -71,7 +73,7 @@ export default class Context {
     regParentBuilder(beanId: string, builder: BeanBuilder): void;
     regParentBuilderByClazz(beanId: string, clazz: any): void;
     regBuilder(beanId: string, builder: BeanBuilder): void;
-    regClazz(beanId: string, clazz: any): void;
+    regClazz(beanId: string, clazz: any, single?: boolean): void;
     /**
      * 合并两个context
      * @param context
