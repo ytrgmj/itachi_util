@@ -99,11 +99,12 @@ afterBuild(context:Context){
 ```
 
 ## LogHelp
+LogHelp 是一个日志类，用来打印日志。
 ### 使用初始化
 以下代码是项目启动的时候调用一次
 ``` typescript
-LogHelp.setEnvName(commonJson.ENV_NAME) //设置环境 ，如果local 会导致打印策略不一样
-LogHelp.setLevels(commonJson.Levels) //设置 输出到日志的级别 ['debug','error','level']
+LogHelp.setEnvName('test') //设置环境 ，如果local 会导致打印策略不一样
+LogHelp.setLevels(['debug','error','level']) //设置 输出到日志的级别 ['debug','error','level']
 ```
 ### 打印日志
 ``` typescript
