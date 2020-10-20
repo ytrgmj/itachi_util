@@ -98,6 +98,14 @@ afterBuild(context:Context){
 }
 ```
 
+### 合并context
+可以将两个context合并在一起。他们的beanId会变成一个合集，相同beanId会被替换成一个。
+``` typescript
+let context = new Context()
+context.regClazz('beanId',OtherDomain)
+context.combine(otherContext) //将另外一个context合并到当前的context
+```
+
 ## LogHelp
 LogHelp 是一个日志类，用来打印日志。
 ### 使用初始化
